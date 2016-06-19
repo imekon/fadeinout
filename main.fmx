@@ -1,7 +1,7 @@
 object MainForm: TMainForm
   Left = 0
   Top = 0
-  Caption = 'Form1'
+  Caption = 'Fade Animations'
   ClientHeight = 480
   ClientWidth = 640
   Fill.Color = claBlack

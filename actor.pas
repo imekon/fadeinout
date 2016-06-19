@@ -23,10 +23,11 @@ type
     procedure DoAnimationFinish(sender: TObject);
     function GetAnimating: boolean;
   public
-    constructor Create(const resourceName: string);
+    constructor Create(const resourceName: string; opacity: single);
     destructor Destroy; override;
 
-    procedure Start;
+    procedure FadeIn(duration: single);
+    procedure FadeOut(duration: single);
 
     property Image: TImage read m_image;
     property X: single read GetX write SetX;
@@ -43,7 +44,7 @@ uses
 
 { TActor }
 
-constructor TActor.Create(const resourceName: string);
+constructor TActor.Create(const resourceName: string; opacity: single);
 begin
   m_bitmap := TBitmapHelpers.LoadBitmap(resourceName);
 
@@ -51,13 +52,9 @@ begin
   m_image.Bitmap := m_bitmap;
   m_image.Width := m_bitmap.Width;
   m_image.Height := m_bitmap.Height;
-  m_image.Opacity := 0;
+  m_image.Opacity := opacity;
 
   m_animation := TFloatAnimation.Create(m_image);
-  m_animation.StartValue := 0;
-  m_animation.StopValue := 1;
-  m_animation.Duration := 2;
-  m_animation.PropertyName := 'Opacity';
   m_animation.Parent := m_image;
   m_animation.OnFinish := DoAnimationFinish;
 end;
@@ -71,7 +68,8 @@ end;
 
 procedure TActor.DoAnimationFinish(sender: TObject);
 begin
-  //
+  // It stays enabled even after finishing, so reset the flag
+  m_animation.Enabled := false;
 end;
 
 function TActor.GetAnimating: boolean;
@@ -109,9 +107,28 @@ begin
   m_image.Position.Y := value;
 end;
 
-procedure TActor.Start;
+procedure TActor.FadeIn(duration: single);
 begin
-  m_animation.Start;
+  if not m_animation.Enabled then
+  begin
+    m_animation.StartValue := 0;
+    m_animation.StopValue := 1;
+    m_animation.Duration := duration;
+    m_animation.PropertyName := 'Opacity';
+    m_animation.Start;
+  end;
+end;
+
+procedure TActor.FadeOut(duration: single);
+begin
+  if not m_animation.Enabled then
+  begin
+    m_animation.StartValue := 1;
+    m_animation.StopValue := 0;
+    m_animation.Duration := duration;
+    m_animation.PropertyName := 'Opacity';
+    m_animation.Start;
+  end;
 end;
 
 end.

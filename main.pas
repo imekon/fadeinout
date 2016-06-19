@@ -15,6 +15,7 @@ type
       Shift: TShiftState; X, Y: Single);
   private
     { Private declarations }
+    state: integer;
   public
     { Public declarations }
     actor: TActor;
@@ -29,7 +30,8 @@ implementation
 
 procedure TMainForm.FormCreate(Sender: TObject);
 begin
-  actor := TActor.Create('someshape');
+  state := 0;
+  actor := TActor.Create('someshape', 0);
   actor.X := ClientWidth / 2 - actor.Width / 2;
   actor.Y := ClientHeight / 2 - actor.Height / 2;
 
@@ -44,7 +46,15 @@ end;
 procedure TMainForm.OnMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Single);
 begin
-  actor.Start;
+  if actor.Animating then
+    exit;
+
+  case state of
+    0: actor.FadeIn(2);
+    1: actor.FadeOut(2);
+  end;
+
+  inc(state);
 end;
 
 end.
