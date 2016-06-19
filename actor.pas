@@ -11,7 +11,7 @@ type
   private
     m_bitmap: TBitmap;
     m_image: TImage;
-    m_animation: TFloatAnimation;
+    m_floatAnimation: TFloatAnimation;
 
     function GetX: single;
     function GetY: single;
@@ -54,9 +54,12 @@ begin
   m_image.Height := m_bitmap.Height;
   m_image.Opacity := opacity;
 
-  m_animation := TFloatAnimation.Create(m_image);
-  m_animation.Parent := m_image;
-  m_animation.OnFinish := DoAnimationFinish;
+  m_floatAnimation := TFloatAnimation.Create(m_image);
+  with m_floatAnimation do
+  begin
+    Parent := m_image;
+    OnFinish := DoAnimationFinish;
+  end;
 end;
 
 destructor TActor.Destroy;
@@ -69,12 +72,12 @@ end;
 procedure TActor.DoAnimationFinish(sender: TObject);
 begin
   // It stays enabled even after finishing, so reset the flag
-  m_animation.Enabled := false;
+  m_floatAnimation.Enabled := false;
 end;
 
 function TActor.GetAnimating: boolean;
 begin
-  result := m_animation.Enabled;
+  result := m_floatAnimation.Enabled;
 end;
 
 function TActor.GetHeight: single;
@@ -109,26 +112,28 @@ end;
 
 procedure TActor.FadeIn(duration: single);
 begin
-  if not m_animation.Enabled then
-  begin
-    m_animation.StartValue := 0;
-    m_animation.StopValue := 1;
-    m_animation.Duration := duration;
-    m_animation.PropertyName := 'Opacity';
-    m_animation.Start;
-  end;
+  if not m_floatAnimation.Enabled then
+    with m_floatAnimation do
+    begin
+      StartValue := 0;
+      StopValue := 1;
+      Duration := duration;
+      PropertyName := 'Opacity';
+      Start;
+    end;
 end;
 
 procedure TActor.FadeOut(duration: single);
 begin
-  if not m_animation.Enabled then
-  begin
-    m_animation.StartValue := 1;
-    m_animation.StopValue := 0;
-    m_animation.Duration := duration;
-    m_animation.PropertyName := 'Opacity';
-    m_animation.Start;
-  end;
+  if not m_floatAnimation.Enabled then
+    with m_floatAnimation do
+    begin
+      StartValue := 1;
+      StopValue := 0;
+      Duration := duration;
+      PropertyName := 'Opacity';
+      Start;
+    end;
 end;
 
 end.
