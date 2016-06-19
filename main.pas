@@ -50,8 +50,10 @@ begin
     exit;
 
   case state of
-    0: actor.FadeIn(2);
-    1: actor.FadeOut(2);
+    0: actor.FadeIn(3);
+    1: actor.FadeOut(3);
+    2: actor.FadeIn(2);
+    3: actor.MoveTo(300, 100, 2);
   end;
 
   inc(state);
