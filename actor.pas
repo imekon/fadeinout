@@ -115,7 +115,10 @@ begin
   if not m_pathAnimation.Enabled then
     with m_pathAnimation do
     begin
+      Path.Clear;
+      Path.MoveTo(TPointF.Create(0, 0));
       Path.MoveTo(TPointF.Create(x, y));
+      Path.ClosePath;
       Duration := dur;
       Start;
     end;

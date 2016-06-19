@@ -53,7 +53,8 @@ begin
     0: actor.FadeIn(3);
     1: actor.FadeOut(3);
     2: actor.FadeIn(2);
-    3: actor.MoveTo(300, 100, 2);
+    3: actor.MoveTo(300, 0, 2);
+    4: actor.MoveTo(-400, 0, 2);
   end;
 
   inc(state);
