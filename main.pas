@@ -4,14 +4,20 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
-  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs;
+  FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs,
+  actor;
 
 type
   TMainForm = class(TForm)
+    procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
+    procedure OnMouseDown(Sender: TObject; Button: TMouseButton;
+      Shift: TShiftState; X, Y: Single);
   private
     { Private declarations }
   public
     { Public declarations }
+    actor: TActor;
   end;
 
 var
@@ -20,5 +26,25 @@ var
 implementation
 
 {$R *.fmx}
+
+procedure TMainForm.FormCreate(Sender: TObject);
+begin
+  actor := TActor.Create('someshape');
+  actor.X := ClientWidth / 2 - actor.Width / 2;
+  actor.Y := ClientHeight / 2 - actor.Height / 2;
+
+  AddObject(actor.Image);
+end;
+
+procedure TMainForm.FormDestroy(Sender: TObject);
+begin
+  actor.Free;
+end;
+
+procedure TMainForm.OnMouseDown(Sender: TObject; Button: TMouseButton;
+  Shift: TShiftState; X, Y: Single);
+begin
+  actor.Start;
+end;
 
 end.
