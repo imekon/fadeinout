@@ -7,7 +7,8 @@ uses
   FMX.Forms,
   main in 'main.pas' {MainForm},
   actor in 'actor.pas',
-  helpers.bitmap in 'helpers.bitmap.pas';
+  helpers.bitmap in 'helpers.bitmap.pas',
+  actor.animation in 'actor.animation.pas';
 
 {$R *.res}
 

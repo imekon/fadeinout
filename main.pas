@@ -46,15 +46,16 @@ end;
 procedure TMainForm.OnMouseDown(Sender: TObject; Button: TMouseButton;
   Shift: TShiftState; X, Y: Single);
 begin
-  if actor.Animating then
+  if actor.Animation.Animating then
     exit;
 
   case state of
-    0: actor.FadeIn(3);
-    1: actor.FadeOut(3);
-    2: actor.FadeIn(2);
-    3: actor.MoveTo(300, 0, 2);
-    4: actor.MoveTo(-400, 0, 2);
+    0: actor.Animation.FadeIn(3);
+    1: actor.Animation.FadeOut(3);
+    2: actor.Animation.FadeIn(2);
+    3: actor.Animation.MoveTo(300, 0, 2);
+    4: actor.Animation.MoveTo(-400, 0, 2);
+    5: actor.Animation.FadeOut(2.5);
   end;
 
   inc(state);
